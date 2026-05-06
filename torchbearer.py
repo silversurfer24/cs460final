@@ -31,10 +31,11 @@ def explain_problem():
     str
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
-
-    TODO
     """
-    return "TODO"
+    return ("A single shortest-path solution from S will only find the shortest path to one target, but our problem requires us to visit all relic nodes."
+    "Our shortest-path run isn't able to decide which relic to visit first if multiple relic locations must be visited later on in the path.\n"
+    "After all inter-location costs are known our algorithm still needs to decide what order to visit the relics in that is the most fuel efficient.\n"
+    "Different relic orderings produce different fuel costs, so we need to search over all possible orderings rather than perform a single shortest-path computation.")
 
 
 # =============================================================================

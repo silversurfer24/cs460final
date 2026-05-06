@@ -17,13 +17,13 @@
 > per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
-  _A single shortest path solution will not satisfy the requirements of this problem; we need to visit all the relic chambers at least once. Our shortest path run will not be enough to determine which relic to visit first when several relics need to visited at least once._
+  _A single shortest-path solution from S will only find the shortest path to one target, but our problem requires us to visit all relic nodes. Our shortest-path run isn't able to decide which relic to visit first if multiple relic locations must be visited later on in the path._
 
 - **What decision remains after all inter-location costs are known:**
-  _After all inter-location costs are known our algorithm still needs to find what order to visit the relics in that is the most fuel-efficient._
+  _After all inter-location costs are known our algorithm still needs to decide what order to visit the relics in that is the most fuel efficient._
 
 - **Why this requires a search over orders (one sentence):**
-  _Different visit orders produce different totals even when every leg is already a shortest path, so we must search over different orderings rather than perform a single shortest-path computation._
+  _Different relic orderings produce different fuel costs, so we need to search over all possible orderings rather than perform a single shortest-path computation._
 
 ---
 
