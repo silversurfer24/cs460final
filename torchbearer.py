@@ -31,6 +31,8 @@ def explain_problem():
     str
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
+        
+    TODO
     """
     return ("A single shortest-path solution from S will only find the shortest path to one target, but our problem requires us to visit all relic nodes."
     "Our shortest-path run isn't able to decide which relic to visit first if multiple relic locations must be visited later on in the path.\n"
@@ -55,9 +57,17 @@ def select_sources(spawn, relics, exit_node):
     list[node]
         No duplicates. Order does not matter.
 
+    Returns a list of nodes to run Dijkstra from.
+    
     TODO
     """
-    pass
+    visited = set()
+    sources = []
+    for node in [spawn] + list(relics):
+        if node not in visited:
+            visited.add(node)
+            sources.append(node)
+    return sources
 
 
 def run_dijkstra(graph, source):
@@ -76,7 +86,29 @@ def run_dijkstra(graph, source):
 
     TODO
     """
-    pass
+    # init every node to infinity; source node starts at 0
+    dist = {node: float('inf') for node in graph}
+    dist[source] = 0
+ 
+    # min-heap of (current_distance, node)
+    # if we pop a stale entry whose distance is worse than dist[u], we skip it
+    pq = [(0, source)]
+ 
+    while pq:
+        curr, u = heapq.heappop(pq)
+ 
+        # skip stale heap entries left behind by earlier improvements
+        if curr > dist[u]:
+            continue
+ 
+        # relax every outgoing edge from u
+        for v, weight in graph[u]:
+            new_dist = curr + weight
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+ 
+    return dist
 
 
 def precompute_distances(graph, spawn, relics, exit_node):
@@ -94,9 +126,16 @@ def precompute_distances(graph, spawn, relics, exit_node):
         Nested structure supporting dist_table[u][v] lookups
         for every source u your design requires.
 
+    Run Dijkstra once per source node. Result: dist_table[u][v] is the cheapest
+    cost from u to v.
+
     TODO
     """
-    pass
+    sources = select_sources(spawn, relics, exit_node)
+    dist_table = {}
+    for source in sources:
+        dist_table[source] = run_dijkstra(graph, source)
+    return dist_table
 
 
 # =============================================================================

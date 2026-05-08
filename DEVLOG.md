@@ -19,12 +19,12 @@ _The goal of the program is to find the most fuel-efficient path to all relic no
 
 ---
 
-## Entry 2 – [Date]: [Short description]
+## Entry 2 – 5/7/26: Part 2a and select_sources() questions
 
 > Required. At least one entry must describe a bug, wrong assumption, or design change
 > you encountered. Describe what went wrong and how you resolved it.
 
-_Your entry here._
+_Working on part 2a in the README.md and implementation of select_sources() in torchbearer.py. I'm a bit confused why exit_node is included in the parameters. If select_sources() is finding the nodes we need to run Dijsktra's from, I don't know why we would need to know the distances FROM the target node, since that is the exit node. I feel like including that node in the sources would just introduce unnecessary computation cost, for now I'm not going to include it and see how the tests check out once my implementation is complete._
 
 ---
 

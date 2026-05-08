@@ -35,8 +35,8 @@
 
 | Source Node Type | Why it is a source |
 |---|---|
-| _node type_ | _one-line reason_ |
-| _node type_ | _one-line reason_ |
+| _Spawn (S)_ | _This is our starting point, so it is always a source node._ |
+| _Relic (R)_ | _We must visit all relics, for each relic we visit we must compute the shortest distance to all other nodes as well as the target node T._ |
 
 ### Part 2b: Distance Storage
 
@@ -44,20 +44,20 @@
 
 | Property | Your answer |
 |---|---|
-| Data structure name | |
-| What the keys represent | |
-| What the values represent | |
-| Lookup time complexity | |
-| Why O(1) lookup is possible | |
+| Data structure name | Nested python dictionary |
+| What the keys represent | A node in the graph |
+| What the values represent | Neighbor nodes from key node and their distance |
+| Lookup time complexity | O(1) |
+| Why O(1) lookup is possible | Python dictionaries use a hash table internally, so key lookups are O(1). |
 
 ### Part 2c: Precomputation Complexity
 
 > State the total complexity and show the arithmetic. Two to three lines max.
 
-- **Number of Dijkstra runs:** _your answer_
-- **Cost per run:** _your answer_
-- **Total complexity:** _your answer_
-- **Justification (one line):** _your answer_
+- **Number of Dijkstra runs:** _k + 1 (starting node is the +1)_
+- **Cost per run:** _O(m log n) for a min-heap priority queue_
+- **Total complexity:** _O( (k+1) * m log n) = O(k*m log n)_
+- **Justification (one line):** _We run Dijkstra's algorithm (O m log n) for each source node in the graph. And there are k + 1 source nodes._
 
 ---
 
@@ -183,4 +183,7 @@ _Your answer here._
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- _Your references here._
+- _Lecture notes_
+- _https://www.geeksforgeeks.org/python/time-complexities-of-python-dictionary/_
+- _https://www.geeksforgeeks.org/python/heap-queue-or-heapq-in-python/_
+- _https://www.geeksforgeeks.org/dsa/time-and-space-complexity-of-dijkstras-algorithm/_
