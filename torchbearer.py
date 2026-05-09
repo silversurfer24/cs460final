@@ -36,8 +36,11 @@ def explain_problem():
     """
     return ("A single shortest-path solution from S will only find the shortest path to one target, but our problem requires us to visit all relic nodes."
     "Our shortest-path run isn't able to decide which relic to visit first if multiple relic locations must be visited later on in the path.\n"
+    
     "After all inter-location costs are known our algorithm still needs to decide what order to visit the relics in that is the most fuel efficient.\n"
-    "Different relic orderings produce different fuel costs, so we need to search over all possible orderings rather than perform a single shortest-path computation.")
+    
+    "Different relic orderings produce different fuel costs, so we need to search over all possible orderings rather than perform a single shortest-path computation."
+    )
 
 
 # =============================================================================
@@ -152,7 +155,21 @@ def dijkstra_invariant_check():
 
     TODO
     """
-    return "TODO"
+    return ("Their stored distance is the true shortest-path cost from the source node `x`, no other route can perform better.\n"
+            
+    "Their stored distance is the shortest path found so far using only finalized nodes in `S` as the intermediate steps.\n"
+    
+    "`S` is empty, source node initialized to have `dist = 0` and all other nodes `dist = inf`. Since source node is not in `S`, `dist[source]`"
+    "is equal to shortest path found so far using finalized nodes as intermediate steps, but since `S` is empty `dist[source] = 0`, thus the invariant holds.\n"
+    
+    "Let `u` be a node not in `S`. Any alternative path to `u` must leave the finalized set at some point."
+    "Because edge weights are nonnegative, the alternative path found to `u` can only ever increase the cost, so no other path is cheaper than `dist[u]`."
+    "Therefore, `dist[u]` is the true shortest path and `u` can be finalized and added to `S`.\n"
+
+    "Every reachable node has been finalized, and their stored distance equals the true shortest-path cost from the source node.\n"
+
+    "If any distance is wrong, the route planner will compare orderings using wrong costs and may pick a route that is not actually the cheapest.\n"
+    )
 
 
 # =============================================================================
@@ -169,7 +186,24 @@ def explain_search():
 
     TODO
     """
-    return "TODO"
+    return ("Greedily picking the closest relic can lead us to a node where any remaining relics are very expensive to reach.\n"
+    
+    "| From \ To | B   | C   | D   | T   |\n"
+    "|-----------|-----|-----|-----|-----|\n"
+    "| S         | 1   | 2   | 3   | --  |\n"
+    "| B         | --  | 100 | 1   | 2   |\n"
+    "| C         | 1   | --  | 100 | 1   |\n"
+    "| D         | --  | 100 | --  | 1   |\n"
+    
+    "Greedy chooses to go to node `B` first since it is the cheapest, then to node `D`. It is at node `D` where we see why greedy fails."
+    "We are required to visit **all** nodes, so we must go to node `C`, and are now forced to pay a cost of 100 to reach the final node.\n"
+    
+    "`S -> C -> B -> D -> T` with a total cost of `2 + 1 + 1 + 1 = 5`.\n"
+    
+    "Greedy fails in our scenario because locally optimal choices do not lead to the globally optimal solution. In this scenario, the future cost of our first move is unknown.\n"
+    
+    "Our algorithm needs to search through all possible relic orderings in order to find the optimal solution.\n"
+    )
 
 
 # =============================================================================
