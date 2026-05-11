@@ -4,17 +4,9 @@
 **Student ID:** 132350007
 **Course:** CS 460 – Algorithms | Spring 2026
 
-> This README is your project documentation. Write it the way a developer would document
-> their design decisions , bullet points, brief justifications, and concrete examples where
-> required. You are not writing an essay. You are explaining what you built and why you built
-> it that way. Delete all blockquotes like this one before submitting.
-
 ---
 
 ## Part 1: Problem Analysis
-
-> Document why this problem is not just a shortest-path problem. Three bullet points, one
-> per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
   _A single shortest-path solution from_ `S` _will only find the shortest path to one target, but our problem requires us to visit all relic nodes. Our shortest-path run isn't able to decide which relic to visit first if multiple relic locations must be visited later on in the path._
@@ -31,16 +23,12 @@
 
 ### Part 2a: Source Selection
 
-> List the source node types as a bullet list. For each, one-line reason.
-
 | Source Node Type | Why it is a source |
 |---|---|
 | _Spawn (S)_ | _This is our starting point, so it is always a source node._ |
 | _Relic (R)_ | _We must visit all relics, for each relic we visit we must compute the shortest distance to all other nodes as well as the target node_ `T`. |
 
 ### Part 2b: Distance Storage
-
-> Fill in the table. No prose required.
 
 | Property | Your answer |
 |---|---|
@@ -63,13 +51,7 @@
 
 ## Part 3: Algorithm Correctness
 
-> Document your understanding of why Dijkstra produces correct distances.
-> Bullet points and short sentences throughout. No paragraphs.
-
 ### Part 3a: What the Invariant Means
-
-> Two bullets: one for finalized nodes, one for non-finalized nodes.
-> Do not copy the invariant text from the spec.
 
 - **For nodes already finalized (in S):**
   _Their stored distance is the true shortest-path cost from the source node_ `x`, _no other route can perform better._
@@ -78,8 +60,6 @@
   _Their stored distance is the shortest path found so far using only finalized nodes in_ `S` _as the intermediate steps._
 
 ### Part 3b: Why Each Phase Holds
-
-> One to two bullets per phase. Maintenance must mention nonnegative edge weights.
 
 - **Initialization : why the invariant holds before iteration 1:**
   `S` _is empty, source node initialized to have_ `dist = 0` _and all other nodes_ `dist = inf`. _Since source node is not in_ `S`, `dist[source]` _is equal to shortest path found so far using finalized nodes as intermediate steps, but since_ `S` _is empty_ `dist[source] = 0`, _thus the invariant holds._
@@ -92,8 +72,6 @@
 
 ### Part 3c: Why This Matters for the Route Planner
 
-> One sentence connecting correct distances to correct routing decisions.
-
 _If any distance is wrong, the route planner will compare orderings using wrong costs and may pick a route that is not actually the cheapest._
 
 ---
@@ -101,9 +79,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 ## Part 4: Search Design
 
 ### Why Greedy Fails
-
-> State the failure mode. Then give a concrete counter-example using specific node names
-> or costs (you may use the illustration example from the spec). Three to five bullets.
 
 - **The failure mode:** _Greedily picking the closest relic can lead us to a node where any remaining relics are very expensive to reach._
 - **Counter-example setup:** 
@@ -121,8 +96,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 ### What the Algorithm Must Explore
 
-> One bullet. Must use the word "order."
-
 - _Our algorithm needs to search through all possible relic orderings in order to find the optimal solution._
 
 ---
@@ -131,9 +104,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 ### Part 5a: State Representation
 
-> Document the three components of your search state as a table.
-> Variable names here must match exactly what you use in torchbearer.py.
-
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
 | Current location | `current_loc` | `node` | where the algorithm is currently in the search |
@@ -141,8 +111,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 | Fuel cost so far | `cost_so_far` | `float` | sum of edge weights along the path taken to reach `current_loc` |
 
 ### Part 5b: Data Structure for Visited Relics
-
-> Fill in the table.
 
 | Property | Your answer |
 |---|---|
@@ -154,8 +122,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 ### Part 5c: Worst-Case Search Space
 
-> Two bullets.
-
 - **Worst-case number of orders considered:** _For a graph with k nodes, where k = |M| is the number of relics, checking all possible relic orderings would take k! operations._
 - **Why:** _In order to find the optimal path and relic sequence, we must check all possible sequences._
 
@@ -164,8 +130,6 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 ## Part 6: Pruning
 
 ### Part 6a: Best-So-Far Tracking
-
-> Three bullets.
 
 - **What is tracked:** `best[0]` _holds the minimum fuel cost path found so far._
 - **When it is used:** _In every loop, before extending the current partial route, the search compares_ `new_cost` _to_ `best[0]`.
@@ -181,16 +145,12 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 ### Part 6c: Pruning Correctness
 
-> One to two bullets. Explain why pruning is safe.
-
 - _Because edge weights are nonnegative, any alternative branch only adds to cost_so_far_
 - _If a partial route has cost_so_far >= best_so_far, the final total of any other branch will always be greater than best_so_far, so it can safely be pruned._
 
 ---
 
 ## References
-
-> Bullet list. If none beyond lecture notes, write that.
 
 - _Lecture notes_
 - _https://www.geeksforgeeks.org/python/time-complexities-of-python-dictionary/_

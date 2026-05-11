@@ -40,20 +40,15 @@ _Working on part 2a in the README.md and implementation of select_sources() in t
 
 ---
 
-## Entry 5 – [Date]: Post-Implementation Reflection
+## Entry 5 – 5/11/26: Post-Implementation Reflection
 
-> Required. Written after your implementation is complete. Describe what you would
-> change or improve given more time.
-
-_Your entry here._
+_I am finally free._
 
 ---
 
-## Final Entry – [Date]: Time Estimate
+## Final Entry – 5/11/26: Time Estimate
 
-> README and DEVLOG writing were supposed 
-
-> Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
+> Kinda confused on what README and DEVLOG writing total is for. I thought that's what parts 1-6 were doing? I just put the cumulative total of parts 1-6 for that time estimate.
 
 | Part | Estimated Hours |
 |---|---|
@@ -64,5 +59,5 @@ _Your entry here._
 | Part 5: State and Search Space | 2 |
 | Part 6: Pruning | 3 |
 | Part 7: Implementation | 8 |
-| README and DEVLOG writing |  |
-| **Total** |  |
+| README and DEVLOG writing | 13 |
+| **Total** | 21 |
