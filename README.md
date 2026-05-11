@@ -115,7 +115,7 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
   | C         | 1   | --  | 100 | 1   |
   | D         | --  | 100 | --  | 1   |
 
-- **What greedy picks:** _Greedy chooses to go to node_ `B` _first since it is the cheapest, then to node_ `D`. _It is at node_ `D` _where we see why greedy fails. We are required to visit **all** nodes, so we must go to node_ `C`, _and are now forced to pay a cost of 100 to reach the final node._
+- **What greedy picks:** _Greedy chooses to go to node_ `B` _first since it is the cheapest, then to node_ `D`. _It is at node_ `D` _where we see why greedy fails. We are required to visit **all** relics, so we must go to node_ `C`, _and are now forced to pay a cost of 100 to reach the final relic._
 - **What optimal picks:** `S -> C -> B -> D -> T` _with a total cost of_ `2 + 1 + 1 + 1 = 5`.
 - **Why greedy loses:** _Greedy fails in our scenario because locally optimal choices do not lead to the globally optimal solution. In this scenario, the future cost of our first move is unknown._
 
@@ -136,9 +136,9 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | | | |
-| Relics already collected | | | |
-| Fuel cost so far | | | |
+| Current location | `current_loc` | `node` | where the algorithm is currently in the search |
+| Relics already collected |`relics_visited_order` | `list[node]` | records the specific order of the nodes taken along the path |
+| Fuel cost so far | `cost_so_far` | `float` | sum of edge weights along the path taken to reach `current_loc` |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -146,18 +146,18 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 | Property | Your answer |
 |---|---|
-| Data structure chosen | |
-| Operation: check if relic already collected | Time complexity: |
-| Operation: mark a relic as collected | Time complexity: |
-| Operation: unmark a relic (backtrack) | Time complexity: |
-| Why this structure fits | |
+| Data structure chosen | set |
+| Operation: check if relic already collected | Time complexity: O(1) |
+| Operation: mark a relic as collected | Time complexity: O(1) |
+| Operation: unmark a relic (backtrack) | Time complexity: O(1) |
+| Why this structure fits | Python sets use hash tables internally, making them efficient for quick membership checks, insertions, and deletions |
 
 ### Part 5c: Worst-Case Search Space
 
 > Two bullets.
 
-- **Worst-case number of orders considered:** _Your answer (in terms of k)._
-- **Why:** _One-line justification._
+- **Worst-case number of orders considered:** _For a graph with k nodes, where k = |M| is the number of relics, checking all possible relic orderings would take k! operations._
+- **Why:** _In order to find the optimal path and relic sequence, we must check all possible sequences._
 
 ---
 
@@ -167,23 +167,24 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 
 > Three bullets.
 
-- **What is tracked:** _Your answer here._
-- **When it is used:** _Your answer here._
-- **What it allows the algorithm to skip:** _Your answer here._
+- **What is tracked:** `best[0]` _holds the minimum fuel cost path found so far._
+- **When it is used:** _In every loop, before extending the current partial route, the search compares_ `new_cost` _to_ `best[0]`.
+- **What it allows the algorithm to skip:** _If_ `new_cost` _is >=_ `best[0]`, _we can safely prune any remaining branches from the partial route. This allows us to reduce our search space and increase efficiency._
 
 ### Part 6b: Lower Bound Estimation
 
 > Three bullets.
 
-- **What information is available at the current state:** _Your answer here._
-- **What the lower bound accounts for:** _Your answer here._
-- **Why it never overestimates:** _Your answer here._
+- **What information is available at the current state:** _Cost of the path so far:_ `cost_so_far`, _set of relics still remaining:_ `relics_remaining`, _list of visited relics:_ `relics_visited_order`
+- **What the lower bound accounts for:** `cost_so_far + future_cost`
+- **Why it never overestimates:** _Our pruning condition only kicks in if_ `cost_so_far + future_cost >= best[0]`. _Because edge weights are nonnegative, any other branch will always be greater than or equal to our current best route and can be safely pruned._
 
 ### Part 6c: Pruning Correctness
 
 > One to two bullets. Explain why pruning is safe.
 
-- _Your answer here._
+- _Because edge weights are nonnegative, any alternative branch only adds to cost_so_far_
+- _If a partial route has cost_so_far >= best_so_far, the final total of any other branch will always be greater than best_so_far, so it can safely be pruned._
 
 ---
 
@@ -196,3 +197,5 @@ _If any distance is wrong, the route planner will compare orderings using wrong 
 - _https://www.geeksforgeeks.org/python/heap-queue-or-heapq-in-python/_
 - _https://www.geeksforgeeks.org/dsa/time-and-space-complexity-of-dijkstras-algorithm/_
 - _https://www.cs.dartmouth.edu/~thc/cs10/lectures/0509/0509.html_
+- _https://wiki.python.org/moin/TimeComplexity_
+- _https://www.geeksforgeeks.org/dsa/branch-and-bound-algorithm/_

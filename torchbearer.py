@@ -188,7 +188,7 @@ def explain_search():
     """
     return ("Greedily picking the closest relic can lead us to a node where any remaining relics are very expensive to reach.\n"
     
-    "| From \ To | B   | C   | D   | T   |\n"
+    "| From \\ To | B   | C   | D   | T   |\n"
     "|-----------|-----|-----|-----|-----|\n"
     "| S         | 1   | 2   | 3   | --  |\n"
     "| B         | --  | 100 | 1   | 2   |\n"
@@ -230,7 +230,34 @@ def find_optimal_route(dist_table, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    # if relics list is empty, go straight from spawn node to exit node
+    if not relics:
+        cost = dist_table[spawn].get(exit_node, float('inf')) # inf is our default value
+        return (cost, [])
+ 
+    # best is a list that tracks the minimum cost found and the relic order
+    # best[0] = best total cost found so far
+    # best[1] = the visit order that achieved it
+    best = [float('inf'), []]
+ 
+    # track relics to visit as a set
+    # track relic order as a list to preserve sequence
+    relics_remaining = set(relics)
+    relics_visited_order = []
+ 
+    _explore(
+        dist_table=dist_table,
+        current_loc=spawn,
+        relics_remaining=relics_remaining,
+        relics_visited_order=relics_visited_order,
+        cost_so_far=0,
+        exit_node=exit_node,
+        best=best,
+    )
+ 
+    if best[0] == float('inf'):
+        return (float('inf'), []) # no valid route was found
+    return (best[0], best[1]) # minimum fuel cost and the relic order
 
 
 def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
@@ -262,7 +289,47 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     explaining why it is safe (cannot skip the optimal solution).
     This comment is graded.
     """
-    pass
+    # Base case: every relic has been collected, all that remains is the leg from current_loc to the exit node
+    if not relics_remaining:
+        leg_to_exit = dist_table[current_loc].get(exit_node, float('inf'))
+        total = cost_so_far + leg_to_exit
+        if total < best[0]:
+            best[0] = total
+            best[1] = list(relics_visited_order)  # pass a copy because the list gets mutated inside our search loop
+        return
+ 
+    # Recursive case: try each remaining relic as the next stop
+    # iterate over a copy of relics_remaining because we mutate the set inside the loop
+    for next_relic in list(relics_remaining):
+        leg_cost = dist_table[current_loc].get(next_relic, float('inf'))
+        if leg_cost == float('inf'):
+            continue  # next_relic is unreachable from current_loc -> skip
+ 
+        # Why pruning is safe:
+        # Because edge weights are nonnegative, any alternative branch only adds to cost_so_far
+        # If a partial route has new_cost >= best[0], the final total of any other branch will always be greater than best[0], so it can safely be pruned
+        new_cost  = cost_so_far + leg_cost
+        if new_cost >= best[0]:
+            continue
+ 
+        # mark this relic visited
+        relics_remaining.remove(next_relic)
+        relics_visited_order.append(next_relic)
+ 
+        # recurse from new location and new cost
+        _explore(
+            dist_table=dist_table,
+            current_loc=next_relic,
+            relics_remaining=relics_remaining,
+            relics_visited_order=relics_visited_order,
+            cost_so_far=new_cost,
+            exit_node=exit_node,
+            best=best,
+        )
+ 
+        # Backtracking: undo so the state is unchanged
+        relics_visited_order.pop()
+        relics_remaining.add(next_relic)
 
 
 # =============================================================================
@@ -286,7 +353,8 @@ def solve(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    dist_table = precompute_distances(graph, spawn, relics, exit_node)
+    return find_optimal_route(dist_table, spawn, relics, exit_node)
 
 
 # =============================================================================

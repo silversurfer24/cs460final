@@ -28,13 +28,19 @@ _Working on part 2a in the README.md and implementation of select_sources() in t
 
 ---
 
-## Entry 3 – [Date]: [Short description]
+## Entry 3 – 5/10/26: Implementing find_optimal_route()
 
-_Your entry here._
+`find_optimal_route()` _is responsible for returning the minimum fuel cost to visit all relic nodes as well as the specific order in which the nodes were visited. In the case that no relic nodes needed to be visited, we returned the cost from the spawn to exit node and an empty list. In order to find the optimal relic order, we need to make a call to_ `_explore()`. _If a valid path has been found, we return it. This one wasn't too bad, toughest part was passing correct args to_ `_explore()`._
 
 ---
 
-## Entry 4 – [Date]: Post-Implementation Reflection
+## Entry 4 - 5/10/26: Implementing _explore()
+
+`_explore()` _is our recursive helper function that utilizes best-so-far cost tracking and pruning to keep track of the best relic ordering while quickly cutting branching paths if they are >= than our current best path. Realizing I had to implement copies to_ `relics_remaining` _and_ `relics_visited_order` _because they kept getting mutated throughout the recursive loop was the most painful part. God I hate recursion, it makes my brain hurt._
+
+---
+
+## Entry 5 – [Date]: Post-Implementation Reflection
 
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.
@@ -45,6 +51,8 @@ _Your entry here._
 
 ## Final Entry – [Date]: Time Estimate
 
+> README and DEVLOG writing were supposed 
+
 > Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
 
 | Part | Estimated Hours |
@@ -53,8 +61,8 @@ _Your entry here._
 | Part 2: Precomputation Design | 3 |
 | Part 3: Algorithm Correctness | 2 |
 | Part 4: Search Design | 1 |
-| Part 5: State and Search Space | |
-| Part 6: Pruning | |
-| Part 7: Implementation | |
-| README and DEVLOG writing | |
-| **Total** | |
+| Part 5: State and Search Space | 2 |
+| Part 6: Pruning | 3 |
+| Part 7: Implementation | 8 |
+| README and DEVLOG writing |  |
+| **Total** |  |
